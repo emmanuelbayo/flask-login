@@ -1,79 +1,188 @@
 {% extends 'base.html' %}
 {% block content %}
-<main
-  class="w-full h-screen flex flex-col items-center justify-center px-4"
->
-  <div class="max-w-sm w-full text-gray-600 space-y-5">
-    <div class="text-center pb-8">
-      <img src="https://ossimg.cmdgametransit.com/OK.Win/other/h5setting_20240313155706n3d7.png" width="150" class="mx-auto" />
-      <div class="mt-5">
-        <h3 class="text-gray-800 text-2xl font-bold sm:text-3xl">
-            Bienvenue 
-        </h3>
-      </div>
-    </div>
-    <form onSubmit="event.preventDefault()" class="space-y-5">
-      <div>
-        <label class="font-medium"> Email </label>
-        <input
-          type="email"
-          required
-          class="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-red-600 shadow-sm rounded-lg"
-        />
-      </div>
-      <div>
-        <label class="font-medium"> Password </label>
-        <input
-          type="password"
-          required
-          class="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-red-600 shadow-sm rounded-lg"
-        />
-      </div>
-      <div class="flex items-center justify-between text-sm">
-        <div class="flex items-center gap-x-3">
-          <input
-            type="checkbox"
-            id="remember-me-checkbox"
-            class="checkbox-item peer hidden"
-          />
-          <label
-            for="remember-me-checkbox"
-            class="relative flex w-5 h-5 bg-white peer-checked:bg-red-600 rounded-md border ring-offset-2 ring-red-600 duration-150 peer-active:ring cursor-pointer after:absolute after:inset-x-0 after:top-[3px] after:m-auto after:w-1.5 after:h-2.5 after:border-r-2 after:border-b-2 after:border-white after:rotate-45"
-          ></label>
-          <span>Remember me</span>
+<div class="h-full">
+    <div class="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8" 
+         x-data="{ activeTab: 'login' }">
+        <div class="sm:mx-auto sm:w-full sm:max-w-md">
+            <h2 class="mt-6 text-center text-3xl font-extrabold text-black">
+                Bienvenue
+            </h2>
         </div>
-        <a
-          href="javascript:void(0)"
-          class="text-center text-red-600 hover:text-red-500"
-          >Forgot password?</a
-        >
-      </div>
-      <button
-        class="w-full px-4 py-2 text-white font-medium bg-red-600 hover:bg-red-500 active:bg-red-600 rounded-lg duration-150"
-      >
-        Sign in
-      </button>
-    </form>
-    <button
-      class="w-full flex items-center justify-center gap-x-3 py-2.5 border rounded-lg text-sm font-medium hover:bg-gray-50 duration-150 active:bg-gray-100"
-    >
-      <!-- SVG for Google Sign In -->
-      <img
-        src="https://raw.githubusercontent.com/sidiDev/remote-assets/7cd06bf1d8859c578c2efbfda2c68bd6bedc66d8/google-icon.svg"
-        alt="Google"
-        class="w-5 h-5"
-      />
-      <!-- Comment: Google Icon SVG here -->
-      Continue with Google
-    </button>
-    <p class="text-center">
-      Don't have an account?
-      <a
-        href="javascript:void(0)"
-        class="font-medium text-red-600 hover:text-red-500"
-        >Sign up</a
-      >
-    </p>
-  </div>
-</main>
+
+        <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+            <div class="bg-white py-8 px-4 sm:shadow sm:rounded-lg sm:px-10 sm:border sm:border-gray-200">
+                <!-- Tabs -->
+                <div class="flex border-b border-gray-200">
+                    <button 
+                        @click="activeTab = 'login'"
+                        :class="activeTab === 'login' ? 'border-black text-black' : 'border-transparent text-gray-500 hover:text-gray-700'"
+                        class="py-4 px-1 border-b-2 font-medium text-sm flex-1 text-center">
+                        Se connecter
+                    </button>
+                    <button 
+                        @click="activeTab = 'register'"
+                        :class="activeTab === 'register' ? 'border-black text-black' : 'border-transparent text-gray-500 hover:text-gray-700'"
+                        class="py-4 px-1 border-b-2 font-medium text-sm flex-1 text-center">
+                        Créer un compte
+                    </button>
+                </div>
+
+                <!-- Login Form -->
+                <div x-show="activeTab === 'login'" class="space-y-6 pt-6">
+                    <form class="space-y-6" action="#" method="POST">
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700">
+                                E-mail
+                            </label>
+                            <div class="mt-1">
+                                <input id="email" name="email" type="email" autocomplete="email" required
+                                    class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-black focus:border-black sm:text-sm">
+                            </div>
+                        </div>
+
+                        <div> 
+                            <label for="toggle-password" class="block text-sm font-medium text-gray-700">
+                                Mot de passe
+                            </label>
+                            <div class="relative mt-1">
+                                <div class="absolute inset-y-0  right-0 flex items-center px-2 py-2 z-10">
+                                    <input type="checkbox" id="toggle" class="hidden js-password-toggle">
+                                    <label for="toggle" class="px-2 text-gray-500 cursor-pointer js-password-label flex
+                                    items-center justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 fill-current text-gray-500"
+                                    viewBox="0 0 24 24"> 
+                                    <path d="M12 19c.946 0 1.81-.103 2.598-.281l-1.757-1.757C12.568 16.983 12.291 17 12 17c-5.351 0-7.424-3.846-7.926-5 
+                                    .204-.47.674-1.381 1.508-2.297L4.184 8.305c-1.538 1.667-2.121 3.346-2.132 3.379-.069.205-.069.428 0 .633C2.073 12.383 
+                                    4.367 19 12 19zM12 5c-1.837 0-3.346.396-4.604.981L3.707 2.293 2.293 3.707l18 18 1.414-1.414-3.319-3.319c2.614-1.951 
+                                    3.547-4.615 3.561-4.657.069-.205.069-.428 0-.633C21.927 11.617 19.633 5 12 5zM16.972 15.558l-2.28-2.28C14.882 12.888 
+                                    15 12.459 15 12c0-1.641-1.359-3-3-3-.459 0-.888.118-1.277.309L8.915 7.501C9.796 7.193 10.814 7 12 7c5.351 0 7.424 3.846 
+                                    7.926 5C19.624 12.692 18.76 14.342 16.972 15.558z" /></svg>
+                                    </label>
+                                </div>
+                                <input id="toggle-password" name="password" type="password" autocomplete="current-password" required
+                                    class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm 
+                                    placeholder-gray-400 focus:outline-none focus:ring-black focus:border-black sm:text-sm">
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <input id="remember-me" name="remember-me" type="checkbox"
+                                    class="h-4 w-4 text-black focus:ring-black border-gray-300 rounded">
+                                <label for="remember-me" class="ml-2 block text-sm text-gray-700">
+                                    Rester connecté
+                                </label>
+                            </div>
+
+                            <div class="text-sm">
+                                <a href="#" class="font-medium text-black hover:text-gray-700">
+                                   Mot de passe oublié ?
+                                </a>
+                            </div>
+                        </div>
+
+                        <div>
+                            <button type="submit"
+                                class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black">
+                                Connexion
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Register Form -->
+                <div x-show="activeTab === 'register'" class="space-y-6 pt-6">
+                    <form class="space-y-6" action="#" method="POST">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-700">
+                                Nom complet
+                            </label>
+                            <div class="mt-1">
+                                <input id="name" name="name" type="text" autocomplete="name" required
+                                    class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-black focus:border-black sm:text-sm">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="register-email" class="block text-sm font-medium text-gray-700">
+                                E-mail
+                            </label>
+                            <div class="mt-1">
+                                <input id="register-email" name="register-email" type="email" autocomplete="email" required
+                                    class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 
+                                    focus:outline-none focus:ring-black focus:border-black sm:text-sm">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="register-password" class="block text-sm font-medium text-gray-700">
+                                Mot de passe
+                            </label>
+                            <div class="relative mt-1">
+                                <div class="absolute inset-y-0  right-0 flex items-center px-2 py-2 z-10">
+                                    <input type="checkbox" id="register-toggle" class="hidden js-register-password-toggle">
+                                    <label for="register-toggle" class="px-2 text-gray-500 cursor-pointer js-register-password-label flex
+                                    items-center justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 fill-current text-gray-500"
+                                    viewBox="0 0 24 24"> 
+                                    <path d="M12 19c.946 0 1.81-.103 2.598-.281l-1.757-1.757C12.568 16.983 12.291 17 12 17c-5.351 0-7.424-3.846-7.926-5 
+                                    .204-.47.674-1.381 1.508-2.297L4.184 8.305c-1.538 1.667-2.121 3.346-2.132 3.379-.069.205-.069.428 0 .633C2.073 12.383 
+                                    4.367 19 12 19zM12 5c-1.837 0-3.346.396-4.604.981L3.707 2.293 2.293 3.707l18 18 1.414-1.414-3.319-3.319c2.614-1.951 
+                                    3.547-4.615 3.561-4.657.069-.205.069-.428 0-.633C21.927 11.617 19.633 5 12 5zM16.972 15.558l-2.28-2.28C14.882 12.888 
+                                    15 12.459 15 12c0-1.641-1.359-3-3-3-.459 0-.888.118-1.277.309L8.915 7.501C9.796 7.193 10.814 7 12 7c5.351 0 7.424 3.846 
+                                    7.926 5C19.624 12.692 18.76 14.342 16.972 15.558z" /></svg>
+                                    </label>
+                                </div>
+                                <input id="register-password" name="register-password" type="password" autocomplete="new-password" required
+                                    class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 
+                                    focus:outline-none focus:ring-black focus:border-black sm:text-sm">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="confirm-password" class="block text-sm font-medium text-gray-700">
+                                Confirmer le mot de passe
+                            </label>
+                            <div class="relative mt-1">
+                                <div class="absolute inset-y-0  right-0 flex items-center px-2 py-2 z-10">
+                                    <input type="checkbox" id="confirm-toggle" class="hidden js-confirm-password-toggle">
+                                    <label for="confirm-toggle" class="px-2 text-gray-500 cursor-pointer js-confirm-password-label flex
+                                    items-center justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 fill-current text-gray-500"
+                                    viewBox="0 0 24 24"> 
+                                    <path d="M12 19c.946 0 1.81-.103 2.598-.281l-1.757-1.757C12.568 16.983 12.291 17 12 17c-5.351 0-7.424-3.846-7.926-5 
+                                    .204-.47.674-1.381 1.508-2.297L4.184 8.305c-1.538 1.667-2.121 3.346-2.132 3.379-.069.205-.069.428 0 .633C2.073 12.383 
+                                    4.367 19 12 19zM12 5c-1.837 0-3.346.396-4.604.981L3.707 2.293 2.293 3.707l18 18 1.414-1.414-3.319-3.319c2.614-1.951 
+                                    3.547-4.615 3.561-4.657.069-.205.069-.428 0-.633C21.927 11.617 19.633 5 12 5zM16.972 15.558l-2.28-2.28C14.882 12.888 
+                                    15 12.459 15 12c0-1.641-1.359-3-3-3-.459 0-.888.118-1.277.309L8.915 7.501C9.796 7.193 10.814 7 12 7c5.351 0 7.424 3.846 
+                                    7.926 5C19.624 12.692 18.76 14.342 16.972 15.558z" /></svg>
+                                    </label>
+                                </div>                                
+                                <input id="confirm-password" name="confirm-password" type="password" autocomplete="new-password" required
+                                    class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-black focus:border-black sm:text-sm">
+                            </div>
+                        </div>
+
+                        <div class="flex items-center">
+                            <input id="terms" name="terms" type="checkbox" required
+                                class="h-4 w-4 text-black focus:ring-black border-gray-300 rounded">
+                            <label for="terms" class="ml-2 block text-sm text-gray-700">
+                                J'accepte les <a href="#" class="font-medium text-black hover:text-gray-700">conditions générales d'utilisation</a>
+                            </label>
+                        </div>
+
+                        <div>
+                            <button type="submit"
+                                class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black">
+                                Créer un compte
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 {% endblock %}
